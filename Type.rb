@@ -10,4 +10,8 @@ class Type
 		raise "NodeTypeUnknown" if @type[_name] == nil
 		return @type[_name]
 	end
+
+	def get_hash _name
+		return @type[_name]
+	end
 end
