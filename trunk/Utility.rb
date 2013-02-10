@@ -24,8 +24,8 @@ class Utility
 		while sheet.row(i)[0] != nil do
 			row = sheet.row(i)
 			type_hash[row[0]] = {
-				"name"			=> row[1]						,
-				"type"			=> row[2]						,
+				"type"			=> row[1]						,
+				"name"			=> row[2]						,
 				"fixed_cost"	=> row[3] 		|| 0			,
 				"variable_cost"	=> Float(row[4] || 0) / 3600	,
 				"fixed_fee"		=> row[5] 		|| 0			,
@@ -39,7 +39,7 @@ class Utility
 		return type_hash
 	end
 
-	def load_map _file
+	def load_map(_file, t)
 		load 'TransportMap.rb'
 		require 'spreadsheet'
 		Spreadsheet.client_encoding = 'UTF-8'
@@ -58,6 +58,11 @@ class Utility
 		map_hash = TransportMap.new
 		while sheet.row(i)[0] != nil do
 			row = sheet.row(i)
+
+			if (t.get_hash(row[2]) == nil)
+				puts "Unrecognized type #{row[2]} while reading map"
+			end
+			
 			map_hash[row[0]] = {
 				"connects_to"	=> row[1].split(/,\s*/).to_set	,
 				"type"			=> row[2]						,
