@@ -10,4 +10,4 @@ m.mock_node('source', 'lambda', ['A1'])
 m.mock_node('target', 'lambda', ['E5'])
 m.consolidate_edges
 
-pp m
+m.find_path('source', 'target')

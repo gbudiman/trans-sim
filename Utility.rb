@@ -12,8 +12,8 @@ class Utility
 		sheet = book.worksheet 0
 
 		header_row = sheet.row 0
-		return false unless header_row[0] == 'Name' &&
-			header_row[1] == 'Type'
+		raise 'IncorrectSpecFile' unless header_row[0] == 'Name' &&
+			header_row[1] == 'Description'
 
 		for i in 1..10
 			break if sheet.row(i)[0] != nil
@@ -24,14 +24,13 @@ class Utility
 		while sheet.row(i)[0] != nil do
 			row = sheet.row(i)
 			type_hash[row[0]] = {
-				"type"			=> row[1]						,
-				"name"			=> row[2]						,
-				"fixed_cost"	=> row[3] 		|| 0			,
-				"variable_cost"	=> Float(row[4] || 0) / 3600	,
-				"fixed_fee"		=> row[5] 		|| 0			,
+				"name"			=> row[1]						,
+				"fixed_cost"	=> row[2] 		|| 0			,
+				"variable_cost"	=> Float(row[3] || 0) / 3600	,
+				"fixed_fee"		=> row[4] 		|| 0			,
 				"variable_fee"	=> 
-					(row[6] || 0) == 0 ? 0 : Float(1) / row[6]	,
-				"congestion"	=> row[7]
+					(row[5] || 0) == 0 ? 0 : Float(1) / row[5]	,
+				"congestion"	=> row[6]
 			}
 			i += 1
 		end
@@ -62,7 +61,7 @@ class Utility
 			if (t.get_hash(row[2]) == nil)
 				puts "Unrecognized type #{row[2]} while reading map"
 			end
-			
+
 			map_hash[row[0]] = {
 				"connects_to"	=> row[1].split(/,\s*/).to_set	,
 				"type"			=> row[2]						,
